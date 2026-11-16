@@ -1,0 +1,6 @@
+# Build (généré au déploiement, ne pas versionner)
+public/
+server.log
+.DS_Store
+node_modules/
+*.zip

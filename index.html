@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#c62828">
+  <!-- Ouvre en plein écran (sans barre de navigateur) quand l'app est installée -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AlerteSecoursBJ">
+  <title>Alerte Secours Bénin</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============ ÉCRAN 1 : ACCUEIL ============ -->
+  <main class="screen active" id="accueil">
+    <header class="entete">
+      <span class="logo">🚨</span>
+      <h1>Alerte Secours <em>BJ</em></h1>
+    </header>
+
+    <p class="accroche">Un accident ? <strong>3 secondes</strong> pour alerter les secours.</p>
+
+    <button class="btn-alerte" id="btn-alerte">
+      <span class="icone">🚨</span>
+      <span class="libelle">ALERTE</span>
+      <span class="sous">Toucher pour signaler</span>
+    </button>
+
+    <nav class="raccourcis">
+      <button class="raccourci" data-aller="premiers-secours">🩹<span>Premiers secours</span></button>
+      <button class="raccourci" data-aller="contacts">👥<span>Mes contacts</span></button>
+      <button class="raccourci" data-aller="numeros">📞<span>Numéros utiles</span></button>
+    </nav>
+  </main>
+
+  <!-- ============ ÉCRAN 2 : TYPE D'URGENCE ============ -->
+  <main class="screen" id="type-urgence">
+    <button class="btn-retour" data-aller="accueil">← Retour</button>
+    <h2>Quel est le problème ?</h2>
+
+    <div class="grille-types">
+      <button class="type" data-type="accident" data-numero="112">
+        <span class="emoji">🚗</span>Accident de route
+      </button>
+      <button class="type" data-type="incendie" data-numero="118">
+        <span class="emoji">🔥</span>Incendie
+      </button>
+      <button class="type" data-type="malaise" data-numero="112">
+        <span class="emoji">🤕</span>Malaise / blessé
+      </button>
+      <button class="type" data-type="autre" data-numero="117">
+        <span class="emoji">⚠️</span>Autre danger
+      </button>
+    </div>
+
+    <details class="options">
+      <summary>+ Précisions (facultatif)</summary>
+      <label>Nombre de victimes
+        <select id="nb-victimes">
+          <option value="">Non renseigné</option>
+          <option>1</option><option>2</option><option>3</option><option>4+</option>
+        </select>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="victime-consciente"> La victime est consciente
+      </label>
+    </details>
+  </main>
+
+  <!-- ============ ÉCRAN 3 : LOCALISATION ============ -->
+  <main class="screen" id="localisation">
+    <button class="btn-retour" data-aller="type-urgence">← Retour</button>
+    <h2>Localisation de l'alerte</h2>
+
+    <div class="carte-geo" id="carte-geo">
+      <div class="statut-geo" id="statut-geo">📍 Recherche de votre position…</div>
+      <div class="coords" id="coords"></div>
+      <div class="adresse" id="adresse"></div>
+      <button class="btn-retry" id="btn-retry-geo">🔄 Réessayer la localisation</button>
+    </div>
+
+    <div class="resume" id="resume-alerte"></div>
+
+    <button class="btn-principal" id="btn-appeler">📞 APPELER LES SECOURS</button>
+    <p class="aide">L'appel sera composé automatiquement. La position part en SMS en arrière-plan.</p>
+
+    <details class="options" id="saisie-manuelle">
+      <summary>Pas de GPS ? Indiquez votre position à la main</summary>
+      <form id="form-position-manuelle" class="form-contact">
+        <input type="text" id="position-manuelle"
+               placeholder="Ex : Cotonou, quartier Fidjrossè, en face de la pharmacie" required>
+        <button type="submit" class="btn-principal">Utiliser cette position</button>
+      </form>
+    </details>
+  </main>
+
+  <!-- ============ ÉCRAN 4 : ALERTE ACTIVE ============ -->
+  <main class="screen" id="alerte-active">
+    <div class="bandeau-appel" id="bandeau-appel">📞 Appel en cours vers le secours…</div>
+
+    <div class="dictée">
+      <p class="etiquette">DICTEZ AUX SECOURS :</p>
+      <p class="gros-coords" id="gros-coords">—</p>
+      <button class="btn-copier" id="btn-copier">📋 Copier les coordonnées</button>
+    </div>
+
+    <button class="btn-principal btn-sms-principal" id="btn-sms">📨 Envoyer ma position aux secours (SMS)</button>
+    <button class="btn-rappel" id="btn-rappel" hidden>🔁 Rappeler</button>
+
+    <div class="actions-alerte">
+      <button class="action" id="btn-carte">🗺 Ouvrir ma position dans Google Maps</button>
+      <button class="action" id="btn-whatsapp">💬 Prévenir un proche</button>
+      <button class="action" id="btn-photo">📷 Ajouter une photo</button>
+      <input type="file" id="input-photo" accept="image/*" capture="environment" hidden>
+    </div>
+
+    <div class="apercu-photo" id="apercu-photo" hidden></div>
+
+    <button class="btn-secours" data-aller="premiers-secours">🩹 Guide des premiers secours en attendant</button>
+    <button class="btn-terminer" id="btn-terminer">Terminer l'alerte</button>
+  </main>
+
+  <!-- ============ ÉCRAN 5 : PREMIERS SECOURS ============ -->
+  <main class="screen" id="premiers-secours">
+    <button class="btn-retour" data-aller="accueil">← Retour</button>
+    <h2>Premiers secours</h2>
+    <p class="sous-titre">Conseils essentiels en attendant les secours. <span class="offline">✓ Disponible hors-ligne</span></p>
+
+    <div class="guides" id="guides">
+      <!-- Rempli en JS selon le type choisi, tout types par défaut -->
+    </div>
+  </main>
+
+  <!-- ============ ÉCRAN 6 : CONTACTS ============ -->
+  <main class="screen" id="contacts">
+    <button class="btn-retour" data-aller="accueil">← Retour</button>
+    <h2>Mes contacts d'urgence</h2>
+    <p class="sous-titre">Ces contacts sont consignés sur <strong>votre</strong> téléphone : ils reçoivent un message avec votre position quand c'est <strong>vous</strong> qui êtes concerné. Un témoin d'étrangers alerte d'abord le 112.</p>
+
+    <ul class="liste-contacts" id="liste-contacts"></ul>
+
+    <form id="form-contact" class="form-contact">
+      <input type="text" id="contact-nom" placeholder="Nom (ex : Papa)" required>
+      <input type="tel" id="contact-tel" placeholder="Téléphone (+229 …)" required>
+      <button type="submit" class="btn-principal">+ Ajouter</button>
+    </form>
+  </main>
+
+  <!-- ============ ÉCRAN 7 : NUMÉROS UTILES ============ -->
+  <main class="screen" id="numeros">
+    <button class="btn-retour" data-aller="accueil">← Retour</button>
+    <h2>Numéros utiles</h2>
+    <p class="sous-titre">Gratuits depuis les opérateurs du Bénin, 24h/24. <em>Sources : CNSR / Ministère de la Santé</em></p>
+
+    <ul class="liste-numeros">
+      <li><a href="tel:112"><strong>112</strong><span>SAMU – urgence médicale</span></a></li>
+      <li><a href="tel:118"><strong>118</strong><span>Sapeurs-pompiers</span></a></li>
+      <li><a href="tel:117"><strong>117</strong><span>Police</span></a></li>
+      <li><a href="tel:166"><strong>166</strong><span>Police (secours)</span></a></li>
+      <li><a href="tel:136"><strong>136</strong><span>Santé publique – orientation</span></a></li>
+      <li><a href="tel:+2290168300000"><strong>01 68 30 00 00</strong><span>SAMU – ligne directe</span></a></li>
+    </ul>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
+    }
+  </script>
+</body>
+</html>

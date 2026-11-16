@@ -1,0 +1,211 @@
+/* ============================================
+   Alerte Secours Bénin — styles
+   Design mobile-first, gros boutons (thème urgence)
+   ============================================ */
+
+:root {
+  --rouge: #c62828;
+  --rouge-fonce: #8e0000;
+  --rouge-clair: #ff6f60;
+  --vert: #2e7d32;
+  --fond: #fafafa;
+  --texte: #212121;
+  --gris: #757575;
+  --carte: #ffffff;
+  --ombre: 0 2px 8px rgba(0, 0, 0, .12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html {
+  background: var(--fond); /* le fond couvre aussi la zone de défilement */
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--fond);
+  color: var(--texte);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom)); /* zone basse sécurisée des téléphones à gestes */
+  min-height: 100vh;
+  min-height: 100dvh; /* hauteur réelle de l'écran, barre du navigateur masquée incluse */
+}
+
+/* ---------- Navigation entre écrans ---------- */
+.screen { display: none; animation: entrer .25s ease; }
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 56px);
+  min-height: calc(100dvh - 56px); /* chaque écran remplit l'écran du téléphone */
+}
+
+@keyframes entrer {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Éléments communs ---------- */
+h2 { font-size: 1.4rem; margin-bottom: 8px; }
+.sous-titre { color: var(--gris); font-size: .9rem; margin-bottom: 16px; }
+.offline { color: var(--vert); font-weight: 600; }
+
+.btn-retour {
+  background: none; border: none; color: var(--rouge);
+  font-size: 1rem; font-weight: 600; padding: 8px 0; cursor: pointer;
+}
+
+.btn-principal {
+  width: 100%; padding: 16px; border: none; border-radius: 12px;
+  background: var(--rouge); color: #fff; font-size: 1.1rem; font-weight: 700;
+  cursor: pointer; margin-top: 16px;
+}
+.btn-principal:active { background: var(--rouge-fonce); }
+
+.aide { font-size: .8rem; color: var(--gris); margin-top: 8px; text-align: center; }
+
+/* ---------- Écran 1 : Accueil ---------- */
+.entete { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.entete .logo { font-size: 1.8rem; }
+.entete h1 { font-size: 1.3rem; }
+.entete em { color: var(--rouge); font-style: normal; }
+
+.accroche { color: var(--gris); margin: 8px 0 24px; }
+
+.btn-alerte {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: min(70vw, 260px); height: min(70vw, 260px);
+  margin: auto; /* centre le bouton dans la hauteur restante de l'écran */
+  border: none; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e53935, var(--rouge-fonce));
+  color: #fff; cursor: pointer;
+  box-shadow: 0 8px 24px rgba(194, 40, 40, .45);
+  transition: transform .1s;
+}
+.btn-alerte:active { transform: scale(.96); }
+.btn-alerte .icone { font-size: 3.2rem; }
+.btn-alerte .libelle { font-size: 2rem; font-weight: 800; letter-spacing: 2px; }
+.btn-alerte .sous { font-size: .8rem; opacity: .85; }
+
+.raccourcis {
+  display: flex; gap: 10px; margin-top: 28px; padding-bottom: 8px;
+}
+.raccourci {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 14px 6px; border: 1px solid #eee; border-radius: 12px;
+  background: var(--carte); font-size: 1.4rem; cursor: pointer; box-shadow: var(--ombre);
+}
+.raccourci span { font-size: .75rem; color: var(--texte); }
+
+/* ---------- Écran 2 : Type d'urgence ---------- */
+.grille-types { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.type {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 24px 10px; border: 2px solid #eee; border-radius: 16px;
+  background: var(--carte); font-size: 1rem; font-weight: 600; cursor: pointer;
+}
+.type:active { border-color: var(--rouge); background: #fff5f5; }
+.type .emoji { font-size: 2.4rem; }
+
+.options { margin-top: 20px; background: var(--carte); border-radius: 12px; padding: 12px 14px; box-shadow: var(--ombre); }
+.options summary { cursor: pointer; font-weight: 600; color: var(--rouge); }
+.options label { display: block; margin-top: 12px; font-size: .9rem; }
+.options select { width: 100%; padding: 10px; margin-top: 6px; border: 1px solid #ddd; border-radius: 8px; }
+.options .check { display: flex; gap: 8px; align-items: center; }
+
+/* ---------- Écran 3 : Localisation ---------- */
+.carte-geo {
+  background: var(--carte); border-radius: 16px; padding: 20px;
+  box-shadow: var(--ombre); text-align: center; min-height: 120px;
+}
+.statut-geo { color: var(--gris); }
+.btn-retry {
+  margin-top: 12px; padding: 10px 18px; border: 1px solid var(--rouge);
+  background: none; color: var(--rouge); border-radius: 8px;
+  font-weight: 600; cursor: pointer;
+}
+.coords { font-size: 1.5rem; font-weight: 800; font-family: ui-monospace, monospace; margin-top: 10px; }
+.adresse { color: var(--gris); font-size: .9rem; margin-top: 6px; }
+
+.resume {
+  margin-top: 14px; padding: 12px 14px; border-left: 4px solid var(--rouge);
+  background: #fff5f5; border-radius: 8px; font-size: .95rem;
+}
+
+/* ---------- Écran 4 : Alerte active ---------- */
+.bandeau-appel {
+  background: var(--rouge); color: #fff; text-align: center;
+  padding: 12px; border-radius: 12px; font-weight: 700;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 50% { opacity: .75; } }
+
+.dictée { text-align: center; margin-top: 20px; background: var(--carte); border-radius: 16px; padding: 20px; box-shadow: var(--ombre); }
+.etiquette { font-size: .8rem; color: var(--gris); letter-spacing: 1px; }
+.gros-coords { font-size: 2rem; font-weight: 800; font-family: ui-monospace, monospace; margin: 8px 0 12px; }
+.btn-copier { border: 1px solid var(--rouge); background: none; color: var(--rouge); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+
+.btn-sms-principal { margin-top: 16px; }
+
+/* Met en avant l'action suivante quand l'utilisateur revient de l'appel */
+.btn-sms-principal.a-faire {
+  animation: attirer 1.2s infinite;
+  box-shadow: 0 0 0 4px rgba(198, 40, 40, .25);
+}
+@keyframes attirer { 50% { box-shadow: 0 0 0 10px rgba(198, 40, 40, .05); } }
+
+.btn-rappel {
+  width: 100%; margin-top: 10px; padding: 14px; border-radius: 12px;
+  border: 2px solid var(--rouge); background: #fff5f5; color: var(--rouge);
+  font-size: 1rem; font-weight: 700; cursor: pointer;
+}
+
+.actions-alerte { display: grid; gap: 10px; margin-top: 16px; }
+.action {
+  padding: 16px; border: 1px solid #eee; border-radius: 12px;
+  background: var(--carte); font-size: 1rem; font-weight: 600; cursor: pointer; text-align: left;
+}
+.action:active { background: #fff5f5; border-color: var(--rouge); }
+
+.apercu-photo { margin-top: 14px; text-align: center; }
+.apercu-photo img { max-width: 100%; border-radius: 12px; }
+
+.btn-secours {
+  width: 100%; margin-top: 16px; padding: 16px; border: none; border-radius: 12px;
+  background: var(--vert); color: #fff; font-size: 1rem; font-weight: 700; cursor: pointer;
+}
+.btn-terminer {
+  width: 100%; margin-top: 10px; padding: 12px; border: 1px solid #ddd;
+  border-radius: 12px; background: none; color: var(--gris); cursor: pointer;
+}
+
+/* ---------- Écran 5 : Premiers secours ---------- */
+.guides { display: grid; gap: 12px; }
+.guide { background: var(--carte); border-radius: 14px; padding: 16px; box-shadow: var(--ombre); }
+.guide h3 { font-size: 1rem; margin-bottom: 8px; }
+.guide ol { padding-left: 20px; display: grid; gap: 6px; font-size: .92rem; }
+.guide .danger { color: var(--rouge); font-weight: 700; }
+
+/* ---------- Écran 6 : Contacts ---------- */
+.liste-contacts { list-style: none; display: grid; gap: 8px; margin-bottom: 16px; }
+.liste-contacts li {
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--carte); padding: 14px; border-radius: 12px; box-shadow: var(--ombre);
+}
+.liste-contacts .supprimer { border: none; background: none; color: var(--rouge); font-size: 1.2rem; cursor: pointer; }
+.vide { color: var(--gris); text-align: center; padding: 20px; }
+
+.form-contact { display: grid; gap: 10px; }
+.form-contact input { padding: 14px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
+
+/* ---------- Écran 7 : Numéros ---------- */
+.liste-numeros { list-style: none; display: grid; gap: 10px; }
+.liste-numeros a {
+  display: flex; flex-direction: column; gap: 2px;
+  background: var(--carte); padding: 16px; border-radius: 12px;
+  text-decoration: none; color: var(--texte); box-shadow: var(--ombre);
+}
+.liste-numeros strong { font-size: 1.4rem; color: var(--rouge); }
+.liste-numeros span { color: var(--gris); font-size: .85rem; }
