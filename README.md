@@ -74,7 +74,7 @@ alerte-secours-benin/
 
 ```bash
 # 1. Récupérer le projet
-git clone https://github.com/<ton-compte>/alerte-secours-benin.git
+git clone https://github.com/bassith62/alerte-secours-benin.git
 cd alerte-secours-benin
 
 # 2. Lancer un serveur local
@@ -126,7 +126,7 @@ L'app est 100 % statique : n'importe quel hébergeur HTTPS convient (**GitHub Pa
 
 ```bash
 # dans les paramètres du dépôt : Settings → Pages → Branch: main → / (root)
-# l'app sera servie sur https://<ton-compte>.github.io/alerte-secours-benin/
+# l'app sera servie sur https://bassith62.github.io/alerte-secours-benin/
 ```
 
 Aucun build nécessaire : les fichiers sont déjà à la racine. Le GPS fonctionne car GitHub Pages sert en HTTPS.
